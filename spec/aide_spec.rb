@@ -14,7 +14,7 @@ RSpec.describe Aide do
 
     context "help" do
       it "should print help by default" do
-        expect(`bin/aide`).to include("Usage")
+        expect(`exe/aide`).to include("Usage")
       end
 
       it "should show help for commands" do
@@ -26,7 +26,7 @@ RSpec.describe Aide do
 
     def run_and_capture(name, *args)
       env = "AIDE_PATH=spec/fixtures/scripts"
-      `#{env} bin/aide #{name} #{args.join(' ')}`.strip
+      `#{env} exe/aide #{name} #{args.join(' ')}`.strip
     end
   end
 end

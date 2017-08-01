@@ -1,4 +1,4 @@
-module Aide
+module Aid
   module Scripts
   end
 end

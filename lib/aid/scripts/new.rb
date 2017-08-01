@@ -1,18 +1,18 @@
-module Aide
+module Aid
   module Scripts
-    class New < Aide::Script
+    class New < Aid::Script
       def self.description
-        "Generates a new script in the aide directory"
+        "Generates a new script in the aid directory"
       end
 
       def self.help
         <<~HELP
-        Usage: aide new [script name]
+        Usage: aid new [script name]
 
-        Generates a new script file in the aide script directory.
+        Generates a new script file in the aid script directory.
 
         Example:
-          #{colorize(:green, "$ aide new my-script-name")}
+          #{colorize(:green, "$ aid new my-script-name")}
 
           will generate a new script called my_script_name.rb
         HELP
@@ -20,7 +20,7 @@ module Aide
 
       def run
         exit_with_help! unless script_name
-        check_for_aide_directory!
+        check_for_aid_directory!
 
         step "Creating #{output_path}" do
           File.open(output_path, "wb") do |fp|
@@ -36,23 +36,23 @@ module Aide
       private
 
       def output_path
-        "#{aide_directory}/#{output_filename}"
+        "#{aid_directory}/#{output_filename}"
       end
 
       def output_filename
         "#{script_name.gsub(/-/, "_")}.rb"
       end
 
-      def check_for_aide_directory!
-        unless Dir.exist?(aide_directory)
-          abort "The #{colorize(:green, aide_directory)} directory is "\
-            "missing. Please run #{colorize(:green, "aide init")} to create it."
+      def check_for_aid_directory!
+        unless Dir.exist?(aid_directory)
+          abort "The #{colorize(:green, aid_directory)} directory is "\
+            "missing. Please run #{colorize(:green, "aid init")} to create it."
         end
       end
 
       def template
         <<~RUBY
-        class #{class_name} < Aide::Script
+        class #{class_name} < Aid::Script
           def self.description
             "FILL ME IN"
           end

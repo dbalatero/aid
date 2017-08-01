@@ -1,4 +1,4 @@
-module Aide
+module Aid
   module Inheritable
     def self.included(klass)
       klass.instance_eval do

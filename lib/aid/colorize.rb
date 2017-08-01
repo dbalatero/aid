@@ -1,4 +1,4 @@
-module Aide::Colorize
+module Aid::Colorize
   extend self
 
   def self.included(base)

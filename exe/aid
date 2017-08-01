@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/aid"
+
+Aid.load_scripts!
+
+script = Aid::Script.scripts[Aid.script_name]
+
+if ARGV.empty?
+  Aid::Scripts::Help.run
+  exit 0
+end
+
+if script
+  script.run(*Aid.script_args)
+else
+  puts "Script '#{script}' not recognized"
+  puts
+
+  Aid::Scripts::Help.run
+
+  exit 1
+end

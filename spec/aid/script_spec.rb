@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'aide'
+require 'aid'
 
-describe Aide::Script do
-  class FakeScript < Aide::Script
+describe Aid::Script do
+  class FakeScript < Aid::Script
   end
 
   describe ".name" do
@@ -18,13 +18,13 @@ describe Aide::Script do
   end
 
   describe ".script_classes" do
-    before { Aide::Script.reset_script_classes! }
+    before { Aid::Script.reset_script_classes! }
 
     it "should have the script in the array when subclassed" do
-      class Haha < Aide::Script
+      class Haha < Aid::Script
       end
 
-      expect(Aide::Script.script_classes).to eq([Haha])
+      expect(Aid::Script.script_classes).to eq([Haha])
     end
   end
 end

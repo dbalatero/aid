@@ -1,7 +1,7 @@
-module Aide
+module Aid
   class Script
-    include Aide::Colorize
-    include Aide::Inheritable
+    include Aid::Colorize
+    include Aid::Inheritable
 
     def self.name
       klass_name = self.to_s.split('::').last
@@ -22,7 +22,7 @@ module Aide
         Help has not been implemented for "#{name}". Please implement a
         help method like so:
 
-        class #{self} < Aide::Script
+        class #{self} < Aid::Script
           def self.help
             <<-EOF
             My awesome help message here.
@@ -63,8 +63,8 @@ module Aide
 
     private
 
-    def aide_directory
-      "./.aide"
+    def aid_directory
+      "./.aid"
     end
   end
 end

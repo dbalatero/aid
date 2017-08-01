@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "aide"
+require "aid"
 
 module SuppressOutput
   # Temporarily redirects STDOUT and STDERR to /dev/null

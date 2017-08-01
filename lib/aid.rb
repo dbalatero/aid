@@ -1,11 +1,11 @@
-require_relative "aide/version"
+require_relative "aid/version"
 
-module Aide
+module Aid
   def self.load_paths
     @load_paths ||= [
-      File.expand_path(File.dirname(__FILE__) + "/aide/scripts"),
-      ".aide",
-      ENV['AIDE_PATH']
+      File.expand_path(File.dirname(__FILE__) + "/aid/scripts"),
+      ".aid",
+      ENV['AID_PATH']
     ].compact
   end
 
@@ -26,7 +26,7 @@ module Aide
   end
 end
 
-require_relative "aide/colorize"
-require_relative "aide/inheritable"
-require_relative "aide/script"
-require_relative "aide/scripts"
+require_relative "aid/colorize"
+require_relative "aid/inheritable"
+require_relative "aid/script"
+require_relative "aid/scripts"

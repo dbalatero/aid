@@ -1,13 +1,13 @@
-module Aide
+module Aid
   module Scripts
-    class Help < Aide::Script
+    class Help < Aid::Script
       attr_reader :script
 
       def initialize(*argv)
         super
 
         script_name = argv.first
-        @script = Aide::Script.scripts[script_name]
+        @script = Aid::Script.scripts[script_name]
       end
 
       def self.description
@@ -32,12 +32,12 @@ module Aide
       private
 
       def basic_usage
-        puts "Usage: aide #{colorize(:light_blue, '[script name]')}"
+        puts "Usage: aid #{colorize(:light_blue, '[script name]')}"
         puts
         puts "Specify a specific script to run, options are: "
         puts
 
-        names_and_descriptions = Aide::Script.scripts.map do |name, script|
+        names_and_descriptions = Aid::Script.scripts.map do |name, script|
           [
             colorize(:light_green, name),
             colorize(:light_blue, script.description)

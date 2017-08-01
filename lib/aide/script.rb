@@ -12,6 +12,11 @@ module Aide
         .join('-')
     end
 
+    def exit_with_help!
+      puts self.class.help
+      exit
+    end
+
     def self.help
       <<~HELP
         Help has not been implemented for "#{name}". Please implement a
@@ -54,6 +59,12 @@ module Aide
     def step(name)
       puts colorize(:info, "\n== #{name} ==")
       yield if block_given?
+    end
+
+    private
+
+    def aide_directory
+      "./.aide"
     end
   end
 end

@@ -9,6 +9,10 @@ module Aide
         step "Creating .aide directory" do
           system! "mkdir -p ./.aide"
         end
+
+        puts
+        puts "All done! To create your first script, run "\
+          "#{colorize(:green, "aide new [script-name]")}"
       end
     end
   end

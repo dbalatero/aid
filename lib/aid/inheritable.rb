@@ -5,7 +5,7 @@ module Aid
         extend ClassMethods
 
         def self.inherited(subklass)
-          self.script_classes << subklass
+          Aid::Script.script_classes << subklass
         end
       end
     end

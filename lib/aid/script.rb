@@ -51,6 +51,10 @@ module Aid
       raise NotImplementedError
     end
 
+    def exit_code
+      0
+    end
+
     def system!(*args)
       puts colorize(:command, args.join(" "))
       system(*args) || abort(colorize(:error, "\n== Command #{args} failed =="))

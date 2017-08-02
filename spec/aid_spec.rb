@@ -24,6 +24,12 @@ RSpec.describe Aid do
       end
     end
 
+    context "doctor" do
+      it "should show help by default" do
+        expect(run_and_capture('doctor')).to include("Aid::Scripts::Doctor")
+      end
+    end
+
     def run_and_capture(name, *args)
       env = "AID_PATH=spec/fixtures/scripts"
       `#{env} exe/aid #{name} #{args.join(' ')}`.strip

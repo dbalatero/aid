@@ -37,6 +37,14 @@ module Aid
       ""
     end
 
+    def help
+      self.class.help
+    end
+
+    def description
+      self.class.description
+    end
+
     attr_reader :argv
 
     def initialize(*argv)

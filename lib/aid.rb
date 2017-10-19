@@ -5,6 +5,7 @@ module Aid
     @load_paths ||= [
       File.expand_path(File.dirname(__FILE__) + "/aid/scripts"),
       ".aid",
+      "#{Aid.project_root}/.aid",
       ENV['AID_PATH']
     ].compact
   end
@@ -23,6 +24,23 @@ module Aid
 
   def self.script_args
     ARGV[1..-1]
+  end
+
+  def self.project_root
+    @project_root ||= begin
+      current_search_dir = Dir.pwd
+
+      loop do
+        git_dir = "#{current_search_dir}/.git"
+
+        return current_search_dir if Dir.exists?(git_dir)
+        break if current_search_dir == "/"
+
+        current_search_dir = File.expand_path("#{current_search_dir}/..")
+      end
+
+      nil
+    end
   end
 end
 

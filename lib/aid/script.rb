@@ -73,6 +73,10 @@ module Aid
       yield if block_given?
     end
 
+    def project_root
+      Aid.project_root
+    end
+
     private
 
     def aid_directory

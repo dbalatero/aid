@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'aid'
 
-describe Aid::Script do
+RSpec.describe Aid::Script do
   class FakeScript < Aid::Script
   end
 
@@ -25,6 +25,15 @@ describe Aid::Script do
       end
 
       expect(Aid::Script.script_classes).to eq([Haha])
+    end
+  end
+
+  describe "#project_root" do
+    it "should be the git repo root" do
+      script = FakeScript.new
+      repo_root = File.expand_path(File.dirname(__FILE__) + "/../..")
+
+      expect(script.project_root).to eq(repo_root)
     end
   end
 end

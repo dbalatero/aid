@@ -2,6 +2,7 @@
 
 #### New features:
 * Added `$project_root/.aid` to the load path so aid loads top-level scripts while in subdirectories
+* Added `within_dir` convenience method to `Aid::Script`
 
 [0.1.2](https://github.com/dbalatero/aid/tag/0.1.2)
 

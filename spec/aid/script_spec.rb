@@ -36,4 +36,26 @@ RSpec.describe Aid::Script do
       expect(script.project_root).to eq(repo_root)
     end
   end
+
+  describe '#within_dir' do
+    it "should operate within a new directory" do
+      filename = "aid-test-tmp-file"
+      tmp_file = "/tmp/#{filename}"
+
+      begin
+        File.write(tmp_file, "stuff")
+
+        script = FakeScript.new
+
+        script.within_dir("/tmp") do
+          contents = File.read(filename).strip
+          expect(contents).to eq("stuff")
+        end
+
+        expect(Dir.pwd).to_not eq("/tmp")
+      ensure
+        File.unlink(tmp_file)
+      end
+    end
+  end
 end

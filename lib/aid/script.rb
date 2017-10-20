@@ -77,18 +77,18 @@ module Aid
       Aid.project_root
     end
 
-    private
-
     def within_dir(directory, &block)
       old_pwd = Dir.pwd
       directory = File.expand_path(directory)
 
-      Dir.chdir(path)
+      Dir.chdir(directory)
 
       yield
     ensure
       Dir.chdir(old_pwd)
     end
+
+    private
 
     def aid_directory
       "./.aid"

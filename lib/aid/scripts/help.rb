@@ -11,11 +11,11 @@ module Aid
       end
 
       def self.description
-        "Displays help information"
+        'Displays help information'
       end
 
       def self.help
-        ""
+        ''
       end
 
       def run
@@ -34,10 +34,12 @@ module Aid
       def basic_usage
         puts "Usage: aid #{colorize(:light_blue, '[script name]')}"
         puts
-        puts "Specify a specific script to run, options are: "
+        puts 'Specify a specific script to run, options are: '
         puts
 
-        names_and_descriptions = Aid::Script.scripts.map do |name, script|
+        scripts = Hash[Aid::Script.scripts.sort]
+
+        names_and_descriptions = scripts.map do |name, script|
           [
             colorize(:light_green, name),
             colorize(:light_blue, script.description)
@@ -47,7 +49,7 @@ module Aid
         padding = names_and_descriptions.map { |name, _| name.length }.max
 
         names_and_descriptions.each do |name, description|
-          puts "  %-#{padding}s %s" % [name, description]
+          puts format("  %-#{padding}s %s", name, description)
         end
 
         puts

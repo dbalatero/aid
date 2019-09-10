@@ -1,10 +1,12 @@
-require_relative "aid/version"
+# frozen_string_literal: true
+
+require_relative 'aid/version'
 
 module Aid
   def self.load_paths
     @load_paths ||= [
-      File.expand_path(File.dirname(__FILE__) + "/aid/scripts"),
-      ".aid",
+      File.expand_path(File.dirname(__FILE__) + '/aid/scripts'),
+      '.aid',
       "#{Aid.project_root}/.aid",
       ENV['AID_PATH']
     ].compact
@@ -33,8 +35,8 @@ module Aid
       loop do
         git_dir = "#{current_search_dir}/.git"
 
-        return current_search_dir if Dir.exists?(git_dir)
-        break if current_search_dir == "/"
+        return current_search_dir if Dir.exist?(git_dir)
+        break if current_search_dir == '/'
 
         current_search_dir = File.expand_path("#{current_search_dir}/..")
       end
@@ -44,7 +46,7 @@ module Aid
   end
 end
 
-require_relative "aid/colorize"
-require_relative "aid/inheritable"
-require_relative "aid/script"
-require_relative "aid/scripts"
+require_relative 'aid/colorize'
+require_relative 'aid/inheritable'
+require_relative 'aid/script'
+require_relative 'aid/scripts'

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Aid
   class Script
     include Aid::Colorize
     include Aid::Inheritable
 
     def self.name
-      klass_name = self.to_s.split('::').last
+      klass_name = to_s.split('::').last
 
       klass_name
         .scan(/[A-Z][a-z0-9]*/)
@@ -34,7 +36,7 @@ module Aid
     end
 
     def self.description
-      ""
+      ''
     end
 
     def help
@@ -64,7 +66,7 @@ module Aid
     end
 
     def system!(*args)
-      puts colorize(:command, args.join(" "))
+      puts colorize(:command, args.join(' '))
       system(*args) || abort(colorize(:error, "\n== Command #{args} failed =="))
     end
 
@@ -80,7 +82,7 @@ module Aid
     private
 
     def aid_directory
-      "./.aid"
+      './.aid'
     end
   end
 end

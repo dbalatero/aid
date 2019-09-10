@@ -1,30 +1,31 @@
+# frozen_string_literal: true
+
 require 'yaml'
 
 class DataDump < Aid::Script
   def self.description
-    "Helpers to get data out of the application."
+    'Helpers to get data out of the application.'
   end
 
   def self.help
     <<~HELP
-    Usage: $ aid data [data_type]
-    Available data types are: #{available_data_types.join(', ')}
+      Usage: $ aid data [data_type]
+      Available data types are: #{available_data_types.join(', ')}
     HELP
   end
 
   def self.available_data_types
-    %w{ questions }
+    %w[questions]
   end
 
   def run
-    exit_with("Please include a data type.") if argv.empty?
-    exit_with("Please include a single data type.") if argv.length != 1
+    exit_with('Please include a data type.') if argv.empty?
+    exit_with('Please include a single data type.') if argv.length != 1
 
-
-    if !self.class.available_data_types.include?(data_type)
+    unless self.class.available_data_types.include?(data_type)
       message = <<~HELP
         #{data_type} is not a valid data type.
-        Available ones are: #{self.class.available_data_types.join(", ")}
+        Available ones are: #{self.class.available_data_types.join(', ')}
       HELP
       exit_with(message)
     end
@@ -44,22 +45,22 @@ class DataDump < Aid::Script
   end
 
   def dump_data
-    self.send(data_type.to_sym)
+    send(data_type.to_sym)
   end
 
   def questions
     [
-      section_yml("setup"),
-      section_yml("petition"),
-    ].map { |section|
-      section["chapters"].map { |chapter|
-        chapter["panels"].map { |p| p["name"] }
-      }
-    }.flatten
+      section_yml('setup'),
+      section_yml('petition')
+    ].map do |section|
+      section['chapters'].map do |chapter|
+        chapter['panels'].map { |p| p['name'] }
+      end
+    end.flatten
   end
 
   def section_yml(section_name)
-    YAML.load(File.read(section_yml_file_path(section_name)))
+    YAML.safe_load(File.read(section_yml_file_path(section_name)))
   end
 
   def section_yml_file_path(section_name)

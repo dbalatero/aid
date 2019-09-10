@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Aid
   module Scripts
     class Doctor < Aid::Script
@@ -17,16 +19,16 @@ module Aid
           print "Checking: #{name}... "
 
           success = if command.respond_to?(:call)
-            command.call
-          else
-            system "#{command} > /dev/null 2>&1"
+                      command.call
+                    else
+                      system "#{command} > /dev/null 2>&1"
           end
 
           if success
             puts 'OK'
           else
             print colorize(:error, 'F')
-            fix = remedy.respond_to?(:join) ? remedy.join(" ") : remedy
+            fix = remedy.respond_to?(:join) ? remedy.join(' ') : remedy
             puts "\n  To fix: #{colorize(:command, fix)}\n\n"
 
             problems << name
@@ -35,11 +37,11 @@ module Aid
       end
 
       def self.description
-        "Checks the health of your development environment"
+        'Checks the health of your development environment'
       end
 
       def self.help
-        "doctor - helps you diagnose any setup issues with this application"
+        'doctor - helps you diagnose any setup issues with this application'
       end
 
       def initialize(*args)
@@ -56,24 +58,20 @@ module Aid
 
       def run
         puts <<~HELP
-        To implement this script for your repository, create the following
-        file in #{colorize(:green, "#{aid_directory}/doctor.rb")}:
-
-          class Doctor < Aid::Scripts::Doctor
-            def run
-              check_phantomjs_installed
+          To implement this script for your repository, create the following
+          file in #{colorize(:green, "#{aid_directory}/doctor.rb")}:
+             class Doctor < Aid::Scripts::Doctor
+              def run
+                check_phantomjs_installed
+              end
+               private
+               def check_phantomjs_installed
+                check name: "PhantomJS installed",
+                  command: "which phantomjs",
+                  remedy: command("brew install phantomjs")
+              end
             end
-
-            private
-
-            def check_phantomjs_installed
-              check name: "PhantomJS installed",
-                command: "which phantomjs",
-                remedy: command("brew install phantomjs")
-            end
-          end
-
-        You can add as many checks to your script as you want.
+           You can add as many checks to your script as you want.
         HELP
 
         exit

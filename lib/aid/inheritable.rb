@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Aid
   module Inheritable
     def self.included(klass)
@@ -25,9 +27,8 @@ module Aid
       end
 
       def load_scripts_deferred
-        script_classes.reduce(Hash.new) do |result, klass|
+        script_classes.each_with_object({}) do |klass, result|
           result[klass.name] = klass
-          result
         end
       end
     end

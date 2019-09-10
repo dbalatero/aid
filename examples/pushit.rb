@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 class Pushit < Aid::Script
   def self.description
-    "Pulls latest code, runs test, pushes your code"
+    'Pulls latest code, runs test, pushes your code'
   end
 
   def self.help
     <<~EOF
-    aid pushit
-
-    Pulls the latest code, restarts, runs the tests, and pushes
-    your new code up.
+      aid pushit
+       Pulls the latest code, restarts, runs the tests, and pushes
+      your new code up.
     EOF
   end
 
@@ -16,8 +17,8 @@ class Pushit < Aid::Script
     Update.run
     Test.run
 
-    step "Pushing your branch" do
-      system! "git push --force-with-lease"
+    step 'Pushing your branch' do
+      system! 'git push --force-with-lease'
     end
   end
 end

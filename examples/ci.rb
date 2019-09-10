@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require_relative './shared/repo_name'
 
 class Ci < Aid::Script
   def self.description
-    "Opens up CircleCI for this project"
+    'Opens up CircleCI for this project'
   end
 
   def self.help
     <<~HELP
-    Usage: $ aid ci
+      Usage: $ aid ci
     HELP
   end
 

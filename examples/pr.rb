@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require_relative './shared/repo_name'
 
 class Pr < Aid::Script
   def self.description
-    "Opens up a pull request for your current branch"
+    'Opens up a pull request for your current branch'
   end
 
   def self.help
     <<~HELP
-    Usage: $ aid pr
+      Usage: $ aid pr
     HELP
   end
 

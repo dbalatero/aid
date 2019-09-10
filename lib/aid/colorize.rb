@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Aid::Colorize
-  extend self
+  module_function
 
   def self.included(base)
     colorize = self
@@ -30,8 +32,8 @@ module Aid::Colorize
 
     command: 96,
     error: 91,
-    info: 93,
-  }
+    info: 93
+  }.freeze
 
   def colorize(color, string)
     "\e[#{COLOR_CODES[color]}m#{string}\e[0m"

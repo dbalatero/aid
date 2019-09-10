@@ -1,6 +1,8 @@
-require "json"
-require "tempfile"
-require "fileutils"
+# frozen_string_literal: true
+
+require 'json'
+require 'tempfile'
+require 'fileutils'
 
 require_relative './shared/pivotal'
 require_relative './shared/git_config'
@@ -9,24 +11,21 @@ class Begin < Aid::Script
   include GitConfig
 
   def self.description
-    "Starts your Pivotal Tracker story and opens a new PR on Github"
+    'Starts your Pivotal Tracker story and opens a new PR on Github'
   end
 
   def self.help
     <<~EOF
-    aid begin #{colorize(:light_blue, "[story id] [branch name]")}
-
-    Example: $ #{colorize(:light_blue, 'aid begin "#133717234"')}
-
-    This command will start your Pivotal Tracker story for you, open a pull
-    request on Github, and copy over the Pivotal Tracker story description to
-    the Github pull request description. As well, any tasks in your
-    Pivotal Tracker story will automatically become [x] checkbox tasks on the
-    Github PR.
-
-    * All branch names will be auto-converted to kebab-case, lowercase
-    * Passing story id/branch name as arguments are optional - if
-      they are missing, you'll be prompted.
+      aid begin #{colorize(:light_blue, '[story id] [branch name]')}
+       Example: $ #{colorize(:light_blue, 'aid begin "#133717234"')}
+       This command will start your Pivotal Tracker story for you, open a pull
+      request on Github, and copy over the Pivotal Tracker story description to
+      the Github pull request description. As well, any tasks in your
+      Pivotal Tracker story will automatically become [x] checkbox tasks on the
+      Github PR.
+       * All branch names will be auto-converted to kebab-case, lowercase
+      * Passing story id/branch name as arguments are optional - if
+        they are missing, you'll be prompted.
     EOF
   end
 
@@ -37,7 +36,7 @@ class Begin < Aid::Script
     check_for_hub_credentials!
     check_for_pivotal_credentials!
 
-    step "Starting the story" do
+    step 'Starting the story' do
       if story_id
         pivotal_start(story_id)
       else
@@ -48,7 +47,7 @@ class Begin < Aid::Script
     reset_hard_to_master!
     create_git_branch
 
-    step "Pushing to Github" do
+    step 'Pushing to Github' do
       make_empty_commit
       push_branch_to_github
     end
@@ -60,11 +59,11 @@ class Begin < Aid::Script
   private
 
   def remove_story_id_from_master_branch
-    FileUtils.rm_rf("tmp/.pivo_flow/stories/master")
+    FileUtils.rm_rf('tmp/.pivo_flow/stories/master')
   end
 
   def check_for_clean_git_workspace!
-    unless system("git diff-index --quiet HEAD --")
+    unless system('git diff-index --quiet HEAD --')
       header = colorize :red, <<~HEADER
         You have unstaged changes in your git repository. Please commit or
         stash them first.
@@ -75,14 +74,14 @@ class Begin < Aid::Script
   end
 
   def reset_hard_to_master!
-    silent "git checkout master",
-      "git fetch origin",
-      "git reset --hard origin/master"
+    silent 'git checkout master',
+           'git fetch origin',
+           'git reset --hard origin/master'
   end
 
   def create_git_branch
-    step "Creating git branch" do
-      system! "bundle exec pf branch"
+    step 'Creating git branch' do
+      system! 'bundle exec pf branch'
     end
   end
 
@@ -98,7 +97,7 @@ class Begin < Aid::Script
   end
 
   def project_id
-    @project_id ||= git_config("pivo-flow.project-id")
+    @project_id ||= git_config('pivo-flow.project-id')
   end
 
   def branch_name
@@ -106,7 +105,7 @@ class Begin < Aid::Script
   end
 
   def default_tasks
-    ["Add your tasks here"]
+    ['Add your tasks here']
   end
 
   def pivotal_tasks
@@ -114,7 +113,7 @@ class Begin < Aid::Script
 
     @pivotal_tasks = begin
       tasks = pivotal
-        .request("/projects/#{project_id}/stories/#{story_id}/tasks")
+              .request("/projects/#{project_id}/stories/#{story_id}/tasks")
 
       return nil if tasks.empty?
 
@@ -146,28 +145,28 @@ class Begin < Aid::Script
       story['url']
     ]
 
-    story_description = story["description"]
+    story_description = story['description']
 
     if story_description
-      parts << "# Description"
+      parts << '# Description'
       parts << story_description
     end
 
-    parts << "## TODO"
+    parts << '## TODO'
     parts << formatted_task_list
 
     parts.join("\n\n").strip
   end
 
   def open_pull_request_on_github!
-    step "Opening pull request..." do
-      tempfile = Tempfile.new("begin_pull_request")
+    step 'Opening pull request...' do
+      tempfile = Tempfile.new('begin_pull_request')
 
       begin
         tempfile.write(pull_request_description)
         tempfile.close
 
-        labels = ["WIP", story["story_type"]].join(",")
+        labels = ['WIP', story['story_type']].join(',')
 
         url = `hub pull-request -F #{tempfile.path} -l "#{labels}" -a "" -o`
 
@@ -188,7 +187,7 @@ class Begin < Aid::Script
 
   def command?(name)
     `which #{name}`
-    $?.success?
+    $CHILD_STATUS.success?
   end
 
   def prompt(msg)
@@ -200,29 +199,25 @@ class Begin < Aid::Script
 
   def normalized_branch_name(branch_name)
     branch_name
-      .gsub(/[^\w\s-]/, "")
-      .gsub(/\s+/, "-")
+      .gsub(/[^\w\s-]/, '')
+      .gsub(/\s+/, '-')
       .downcase
-      .gsub(/-*$/, "") # trailing dashes
+      .gsub(/-*$/, '') # trailing dashes
   end
 
   def check_for_hub!
-    if !command?("hub")
-      download_url = "https://github.com/github/hub/releases"\
-        "/download/v2.3.0-pre10/hub-darwin-amd64-2.3.0-pre10.tgz"
+    unless command?('hub')
+      download_url = 'https://github.com/github/hub/releases'\
+        '/download/v2.3.0-pre10/hub-darwin-amd64-2.3.0-pre10.tgz'
 
       abort <<~EOF
-      You need to install `hub` before you can use this program.
-      We use a pre-release version of hub as it adds some additional
-      flags to `hub pull-request`.
-
-      To fix:
-
-        Download it at #{download_url}
-
-        Untar the downloaded tarball, cd to the directory, and run:
-
-        $ ./install
+        You need to install `hub` before you can use this program.
+        We use a pre-release version of hub as it adds some additional
+        flags to `hub pull-request`.
+         To fix:
+           Download it at #{download_url}
+           Untar the downloaded tarball, cd to the directory, and run:
+           $ ./install
       EOF
     end
   end
@@ -230,7 +225,7 @@ class Begin < Aid::Script
   def check_for_hub_credentials!
     config_file = "#{ENV['HOME']}/.config/hub"
     credentials_exist = File.exist?(config_file) &&
-      File.read(config_file).match(/oauth_token/i)
+                        File.read(config_file).match(/oauth_token/i)
 
     unless credentials_exist
       abort <<~EOF
@@ -246,20 +241,20 @@ class Begin < Aid::Script
 
   def check_for_pivotal_credentials!
     config_abort_if_blank!(
-      "pivo-flow.api-token",
+      'pivo-flow.api-token',
       api_token,
-      "You can find this value in your user Profile section on Pivotal."
+      'You can find this value in your user Profile section on Pivotal.'
     )
 
     config_abort_if_blank!(
-      "pivo-flow.project-id",
+      'pivo-flow.project-id',
       project_id,
-      "Please run: $ git config pivo-flow.project-id 2092669"
+      'Please run: $ git config pivo-flow.project-id 2092669'
     )
   end
 
   def interactive_prompt_for_story
-    system "bundle exec pf stories"
+    system 'bundle exec pf stories'
     @story_id = `bundle exec pf current`.strip
   end
 
@@ -268,11 +263,11 @@ class Begin < Aid::Script
   end
 
   def story_id
-    @story_id ||= argv.first&.gsub(/[^\d]/, "")
+    @story_id ||= argv.first&.gsub(/[^\d]/, '')
   end
 
   def api_token
-    @api_token ||= git_config("pivo-flow.api-token")
+    @api_token ||= git_config('pivo-flow.api-token')
   end
 
   def pivotal

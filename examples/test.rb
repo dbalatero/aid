@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class Test < Aid::Script
   def self.description
-    "Runs full test suite"
+    'Runs full test suite'
   end
+
   def self.help
     <<~HELP
-    Usage: aid test
-
-    Runs all the tests that are needed for acceptance.
+      Usage: aid test
+       Runs all the tests that are needed for acceptance.
     HELP
   end
 

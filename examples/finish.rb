@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Finish < Aid::Script
   def self.description
-    "Commits what is currently staged with a [finishes] tag"
+    'Commits what is currently staged with a [finishes] tag'
   end
 
   def run
@@ -17,8 +19,7 @@ class Finish < Aid::Script
 
     begin
       template_file.write <<~MSG
-
-      [finishes ##{current_story_id}]
+        [finishes ##{current_story_id}]
       MSG
 
       template_file.close
@@ -31,8 +32,8 @@ class Finish < Aid::Script
   end
 
   def check_for_editor!
-    unless ENV.has_key?('EDITOR')
-      abort "You need to set an EDITOR, e.g. export EDITOR=vim"
+    unless ENV.key?('EDITOR')
+      abort 'You need to set an EDITOR, e.g. export EDITOR=vim'
     end
   end
 
@@ -56,7 +57,7 @@ class Finish < Aid::Script
 
   def check_for_staged_files!
     unless system('git status -s | grep "^[MADRCU]" >/dev/null 2>&1')
-      abort colorize(:red, "You need to stage some files for committing first")
+      abort colorize(:red, 'You need to stage some files for committing first')
     end
   end
 end

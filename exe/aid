@@ -4,6 +4,7 @@
 require_relative '../lib/aid'
 
 Aid.load_scripts!
+Aid.load_configs!
 
 script = Aid::Script.scripts[Aid.script_name]
 

@@ -14,9 +14,16 @@ module Aid
 
   def self.load_scripts!
     load_paths.each do |path|
-      Dir.glob("#{path}/**/*.rb").each do |file|
-        require File.expand_path(file)
+      Dir.glob("#{path}/*.rb").each do |file|
+        require File.expand_path(file) unless %r{/config\.rb$}.match?(file)
       end
+    end
+  end
+
+  def self.load_configs!
+    load_paths.each do |path|
+      config = File.expand_path("#{path}/config.rb")
+      require config if File.exist?(config)
     end
   end
 

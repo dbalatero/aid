@@ -3,45 +3,6 @@
 module Aid
   module Scripts
     class Doctor < Aid::Script
-      class Check
-        include Aid::Colorize
-
-        attr_reader :name, :command, :remedy, :problems
-
-        def initialize(name:, command:, remedy:)
-          @name = name
-          @command = command
-          @remedy = remedy
-          @problems = []
-        end
-
-        def run!
-          print "Checking: #{name}... "
-
-          success = run_command
-
-          if success
-            puts 'OK'
-          else
-            print colorize(:error, 'F')
-            fix = remedy.respond_to?(:join) ? remedy.join(' ') : remedy
-            puts "\n  To fix: #{colorize(:command, fix)}\n\n"
-
-            problems << name
-          end
-        end
-
-        private
-
-        def run_command
-          if command.respond_to?(:call)
-            command.call
-          else
-            system "#{command} > /dev/null 2>&1"
-          end
-        end
-      end
-
       def self.description
         'Checks the health of your development environment'
       end
@@ -96,7 +57,100 @@ module Aid
       end
 
       def command(cmd)
-        "run #{colorize :command, cmd}"
+        CommandRemedy.new(cmd)
+      end
+
+      class Remedy
+        def initialize(message)
+          @message = message
+        end
+
+        def auto_fixable?
+          false
+        end
+
+        def auto_fix!
+          # By default, we don't know how to auto-fix
+        end
+
+        def to_s
+          message
+        end
+
+        private
+
+        attr_reader :message
+      end
+
+      class CommandRemedy < Remedy
+        include Aid::Colorize
+
+        alias shell_command message
+
+        def initialize(shell_command)
+          super
+        end
+
+        def auto_fixable?
+          true
+        end
+
+        def auto_fix!
+          puts "==> running #{colorize(:command, "$ #{shell_command}")}"
+          system(shell_command)
+        end
+
+        def to_s
+          "run #{colorize :command, shell_command}"
+        end
+      end
+
+      class Check
+        include Aid::Colorize
+
+        attr_reader :name, :command, :remedy, :problems
+
+        def initialize(name:, command:, remedy:)
+          @name = name
+          @command = command
+          @remedy = remedy.is_a?(Remedy) ? remedy : Remedy.new(remedy)
+          @problems = []
+          @checked_once = false
+        end
+
+        def run!
+          print "Checking: #{name}... "
+
+          success = run_command
+
+          if success
+            puts 'OK'
+          else
+            puts colorize(:error, 'F')
+
+            if @checked_once || !remedy.auto_fixable?
+              puts "\n  To fix: #{remedy}\n\n"
+              problems << name
+            elsif remedy.auto_fixable?
+              @checked_once = true
+
+              puts '==> attempting autofix'
+              remedy.auto_fix!
+              puts '==> retrying check'
+              run!
+            end
+          end
+        end
+
+        private
+
+        def run_command
+          if command.respond_to?(:call)
+            command.call
+          else
+            system "#{command} > /dev/null 2>&1"
+          end
+        end
       end
     end
   end

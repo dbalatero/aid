@@ -18,11 +18,7 @@ module Aid
         def run!
           print "Checking: #{name}... "
 
-          success = if command.respond_to?(:call)
-                      command.call
-                    else
-                      system "#{command} > /dev/null 2>&1"
-          end
+          success = run_command
 
           if success
             puts 'OK'
@@ -32,6 +28,16 @@ module Aid
             puts "\n  To fix: #{colorize(:command, fix)}\n\n"
 
             problems << name
+          end
+        end
+
+        private
+
+        def run_command
+          if command.respond_to?(:call)
+            command.call
+          else
+            system "#{command} > /dev/null 2>&1"
           end
         end
       end
@@ -60,18 +66,22 @@ module Aid
         puts <<~HELP
           To implement this script for your repository, create the following
           file in #{colorize(:green, "#{aid_directory}/doctor.rb")}:
-             class Doctor < Aid::Scripts::Doctor
-              def run
-                check_phantomjs_installed
-              end
-               private
-               def check_phantomjs_installed
-                check name: "PhantomJS installed",
-                  command: "which phantomjs",
-                  remedy: command("brew install phantomjs")
-              end
+
+          class Doctor < Aid::Scripts::Doctor
+            def run
+              check_phantomjs_installed
             end
-           You can add as many checks to your script as you want.
+
+            private
+
+            def check_phantomjs_installed
+              check name: "PhantomJS installed",
+                command: "which phantomjs",
+                remedy: command("brew install phantomjs")
+            end
+          end
+
+          You can add as many checks to your script as you want.
         HELP
 
         exit
@@ -85,8 +95,8 @@ module Aid
         problems.size
       end
 
-      def command(s)
-        "run #{colorize :command, s}"
+      def command(cmd)
+        "run #{colorize :command, cmd}"
       end
     end
   end

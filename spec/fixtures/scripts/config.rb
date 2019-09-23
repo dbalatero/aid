@@ -1,1 +1,3 @@
-MyName.computer_name = "HAL 9000"
+# frozen_string_literal: true
+
+MyName.computer_name = 'HAL 9000'

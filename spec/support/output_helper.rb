@@ -24,10 +24,10 @@ module OutputHelper
       $stderr.reopen(File.new('/dev/null', 'w'))
       $stdout.reopen(File.new('/dev/null', 'w'))
       retval = yield
-    rescue Exception => e
+    rescue StandardError
       $stdout.reopen(original_stdout)
       $stderr.reopen(original_stderr)
-      raise e
+      raise
     ensure
       $stdout.reopen(original_stdout)
       $stderr.reopen(original_stderr)

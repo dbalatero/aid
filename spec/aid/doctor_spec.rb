@@ -7,16 +7,16 @@ describe Aid::Scripts::Doctor do
   class TestDoctor < Aid::Scripts::Doctor
     def run
       check name: 'ls is installed',
-            command: 'which ls',
-            remedy: 'switch from windows'
+        command: 'which ls',
+        remedy: 'switch from windows'
     end
   end
 
   class FailureTestDoctor < Aid::Scripts::Doctor
     def run
       check name: 'fdsafdsafdsa is installed',
-            command: 'which fdsafdsafdsa',
-            remedy: 'there is no remedy'
+        command: 'which fdsafdsafdsa',
+        remedy: 'there is no remedy'
     end
   end
 

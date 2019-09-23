@@ -43,10 +43,10 @@ module Aid
       end
 
       def check_for_aid_directory!
-        unless Dir.exist?(aid_directory)
-          abort "The #{colorize(:green, aid_directory)} directory is "\
-            "missing. Please run #{colorize(:green, 'aid init')} to create it."
-        end
+        return if Dir.exist?(aid_directory)
+
+        abort "The #{colorize(:green, aid_directory)} directory is "\
+          "missing. Please run #{colorize(:green, 'aid init')} to create it."
       end
 
       def template

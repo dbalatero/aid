@@ -64,7 +64,7 @@ class Update < Aid::Script
     step 'Attempting to restart Rails' do
       output = `bin/rails restart`
 
-      if $CHILD_STATUS.exitstatus > 0
+      if $CHILD_STATUS.exitstatus.positive?
         puts colorize(
           :light_red,
           'skipping restart, not supported in this version of '\

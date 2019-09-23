@@ -6,11 +6,12 @@ class Pushit < Aid::Script
   end
 
   def self.help
-    <<~EOF
-      aid pushit
-       Pulls the latest code, restarts, runs the tests, and pushes
-      your new code up.
-    EOF
+    <<~HELP
+      $ aid pushit
+
+      Pulls the latest code, restarts, runs the tests, and pushes your new
+      code up.
+    HELP
   end
 
   def run

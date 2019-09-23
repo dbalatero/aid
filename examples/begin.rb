@@ -179,8 +179,6 @@ class Begin < Aid::Script
     end
   end
 
-  private
-
   def silent(*cmds)
     cmds.each { |cmd| system("#{cmd} >/dev/null 2>&1") }
   end
@@ -206,20 +204,22 @@ class Begin < Aid::Script
   end
 
   def check_for_hub!
-    unless command?('hub')
-      download_url = 'https://github.com/github/hub/releases'\
-        '/download/v2.3.0-pre10/hub-darwin-amd64-2.3.0-pre10.tgz'
+    return if command?('hub')
 
-      abort <<~EOF
-        You need to install `hub` before you can use this program.
-        We use a pre-release version of hub as it adds some additional
-        flags to `hub pull-request`.
-         To fix:
-           Download it at #{download_url}
-           Untar the downloaded tarball, cd to the directory, and run:
-           $ ./install
-      EOF
-    end
+    download_url = 'https://github.com/github/hub/releases'\
+      '/download/v2.3.0-pre10/hub-darwin-amd64-2.3.0-pre10.tgz'
+
+    abort <<~HELP
+      You need to install `hub` before you can use this program.
+      We use a pre-release version of hub as it adds some additional
+      flags to `hub pull-request`.
+
+      To fix:
+
+        Download it at #{download_url}
+        Untar the downloaded tarball, cd to the directory, and run:
+        $ ./install
+    HELP
   end
 
   def check_for_hub_credentials!

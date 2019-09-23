@@ -4,6 +4,7 @@ Next version:
 * Sorted the list of commands in the `aid help` output
 * Will auto-load an `.aid/config.rb` file last if present
 * Added auto-fixing support to `aid doctor`
+* Added plugin loading support for gems prefixed with `aid-`
 
 ### Dev changes:
 * Added Rubocop config

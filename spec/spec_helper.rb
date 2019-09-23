@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require 'bundler/setup'
+require 'pry'
 require 'aid'
 require 'rspec'
+require 'bundler/setup'
+Bundler.setup(:development)
 
 root = File.expand_path(File.dirname(__FILE__) + '/..')
-
 Dir["#{root}/spec/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|

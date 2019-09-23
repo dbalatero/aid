@@ -55,5 +55,6 @@ end
 
 require_relative 'aid/colorize'
 require_relative 'aid/inheritable'
+require_relative 'aid/plugins'
 require_relative 'aid/script'
 require_relative 'aid/scripts'

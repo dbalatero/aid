@@ -33,7 +33,7 @@ RSpec.describe Aid::Script do
   describe '#project_root' do
     it 'should be the git repo root' do
       script = FakeScript.new
-      repo_root = File.expand_path(File.dirname(__FILE__) + '/../..')
+      repo_root = File.expand_path(File.dirname(__FILE__) + '/../../..')
 
       expect(script.project_root).to eq(repo_root)
     end

@@ -4,6 +4,7 @@ AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - 'examples/*.rb'
+    - 'spec/plugins/**/*'
 
 Layout/AlignHash:
   Enabled: false

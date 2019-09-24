@@ -1,4 +1,4 @@
-Next version:
+[0.2.0](https://github.com/dbalatero/aid/tag/0.2.0)
 
 #### New features:
 * Sorted the list of commands in the `aid help` output

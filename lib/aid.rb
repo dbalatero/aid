@@ -40,9 +40,10 @@ module Aid
       current_search_dir = Dir.pwd
 
       loop do
-        git_dir = "#{current_search_dir}/.git"
+        git_index = "#{current_search_dir}/.git"
+        git_index_exists = Dir.exist?(git_index) || File.exist?(git_index)
 
-        return current_search_dir if Dir.exist?(git_dir)
+        return current_search_dir if git_index_exists
         break if current_search_dir == '/'
 
         current_search_dir = File.expand_path("#{current_search_dir}/..")

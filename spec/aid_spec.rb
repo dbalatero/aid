@@ -26,6 +26,14 @@ RSpec.describe Aid do
       end
     end
 
+    context 'version' do
+      it 'should print the current version' do
+        expect(run_and_capture('version')).to include(
+          Aid::VERSION
+        )
+      end
+    end
+
     context 'config files' do
       it 'should load config files' do
         expect(run_and_capture('my-name')).to include('HAL 9000')
